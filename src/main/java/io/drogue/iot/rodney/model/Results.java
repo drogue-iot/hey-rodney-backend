@@ -10,10 +10,10 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Results {
-    List<Result> results;
+    private List<Result> results;
 
     @JsonProperty("result_index")
-    int resultIndex;
+    private int resultIndex;
 
     public void setResultIndex(int resultIndex) {
         this.resultIndex = resultIndex;
