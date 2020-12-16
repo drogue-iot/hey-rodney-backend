@@ -1,6 +1,7 @@
 package io.drogue.iot.rodney;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.StringJoiner;
 
 public class Command {
@@ -9,6 +10,12 @@ public class Command {
     public static Command of(String... command) {
         var result = new Command();
         result.command = command;
+        return result;
+    }
+
+    public static Command of(List<String> command) {
+        var result = new Command();
+        result.command = command.toArray(String[]::new);
         return result;
     }
 

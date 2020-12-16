@@ -1,7 +1,5 @@
 package io.drogue.iot.rodney;
 
-import java.io.IOException;
-
 import javax.inject.Inject;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
@@ -18,7 +16,7 @@ public class BackendResource {
     Service service;
 
     @POST
-    public Response hey(final CloudEvent event) throws IOException {
+    public Response hey(final CloudEvent event) throws Exception {
 
         if (event == null || event.getData() == null) {
             return Response

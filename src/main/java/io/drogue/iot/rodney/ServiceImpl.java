@@ -2,8 +2,11 @@ package io.drogue.iot.rodney;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.inject.Any;
+import javax.enterprise.inject.Instance;
 import javax.inject.Inject;
 
 import org.slf4j.Logger;
@@ -13,6 +16,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import io.drogue.iot.rodney.model.Alternative;
 import io.drogue.iot.rodney.model.Results;
+import io.drogue.iot.rodney.rules.RuleProvider;
 
 @ApplicationScoped
 public class ServiceImpl implements Service {
@@ -24,6 +28,10 @@ public class ServiceImpl implements Service {
 
     @Inject
     CommandExecutor executor;
+
+    @Inject
+    @Any
+    Instance<RuleProvider> ruleProviders;
 
     List<Command> evaluate(final Results results) {
 
@@ -73,15 +81,17 @@ public class ServiceImpl implements Service {
     protected List<Command> evalRules(final String transcript) {
         LOG.debug("Eval: '{}'", transcript);
 
-        if (transcript.equalsIgnoreCase("tell me a joke")) {
-            return List.of(Command.of("echo", "Very funny! Ha, ha!"));
-        }
+        return this.ruleProviders.stream()
+                .flatMap(provider -> {
+                    LOG.debug("Provider: {}", provider);
+                    return provider.check(transcript).stream();
+                })
+                .collect(Collectors.toList());
 
-        return List.of();
     }
 
     @Override
-    public void execute(final byte[] payload) throws IOException {
+    public void execute(final byte[] payload) throws Exception {
         process(parseAndEval(payload));
     }
 
@@ -89,7 +99,7 @@ public class ServiceImpl implements Service {
         return evaluate(mapper.readValue(payload, Results.class));
     }
 
-    void process(final List<Command> commands) {
+    void process(final List<Command> commands) throws Exception {
         executor.execute(commands);
     }
 }

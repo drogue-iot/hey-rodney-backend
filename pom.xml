@@ -60,6 +60,16 @@
         </dependency>
 
         <dependency>
+            <groupId>org.yaml</groupId>
+            <artifactId>snakeyaml</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.eclipse.neoscada.utils</groupId>
+            <artifactId>org.eclipse.scada.utils</artifactId>
+            <version>0.4.0</version>
+        </dependency>
+
+        <dependency>
             <groupId>io.cloudevents</groupId>
             <artifactId>cloudevents-api</artifactId>
             <version>${cloudevents.version}</version>

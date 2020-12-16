@@ -14,13 +14,9 @@ public class DefaultCommandExecutor implements CommandExecutor {
     int timeout;
 
     @Override
-    public void execute(final List<Command> commands) {
+    public void execute(final List<Command> commands) throws Exception {
         for (Command command : commands) {
-            try {
-                executeCommand(command);
-            } catch (final Exception e) {
-                throw new RuntimeException("Failed to execute command: " + command, e);
-            }
+            executeCommand(command);
         }
     }
 

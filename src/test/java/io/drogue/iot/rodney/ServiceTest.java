@@ -45,4 +45,32 @@ public class ServiceTest {
         assertThat(result, IsIterableContaining.hasItem(Command.of("echo", "Very funny! Ha, ha!")));
     }
 
+    private void testPhrase(final String phrase, final Command command) throws IOException {
+        var json = new JsonObject()
+                .put("results", new JsonArray()
+                        .add(new JsonObject()
+                                .put("final", true)
+                                .put("alternatives", new JsonArray()
+                                        .add(new JsonObject()
+                                                .put("confidence", 0.9)
+                                                .put("transcript", phrase)
+                                        )
+                                )
+                        )
+                )
+                .put("result_index", 0);
+
+        System.out.println(json.encodePrettily());
+
+        var result = service.parseAndEval(json.toBuffer().getBytes());
+
+        assertThat(result, IsNull.notNullValue());
+        assertThat(result, IsIterableContaining.hasItem(command));
+    }
+
+    @Test
+    public void testFile1() throws IOException {
+        testPhrase("Hello Rodney", Command.of("echo", "hi Rodney!"));
+    }
+
 }
