@@ -27,8 +27,16 @@ public class FileBasedProvider implements RuleProvider {
 
     private static final Logger LOG = LoggerFactory.getLogger(FileBasedProvider.class);
 
-    private static class Rules {
-        public List<Rule> rules;
+    public static class Rules {
+        private List<Rule> rules;
+
+        public void setRules(List<Rule> rules) {
+            this.rules = rules;
+        }
+
+        public List<Rule> getRules() {
+            return rules;
+        }
     }
 
     /**
@@ -42,9 +50,25 @@ public class FileBasedProvider implements RuleProvider {
      *       - "Hello ${1}"
      * }</pre>
      */
-    private static class Rule {
-        public String matcher;
-        public List<String> command;
+    public static class Rule {
+        private String matcher;
+        private List<String> command;
+
+        public void setCommand(List<String> command) {
+            this.command = command;
+        }
+
+        public List<String> getCommand() {
+            return command;
+        }
+
+        public void setMatcher(String matcher) {
+            this.matcher = matcher;
+        }
+
+        public String getMatcher() {
+            return matcher;
+        }
 
         public List<Command> match(final String phrase) {
 

@@ -35,34 +35,34 @@ public class ServiceImpl implements Service {
 
     List<Command> evaluate(final Results results) {
 
-        if (results.resultIndex != 0) {
-            LOG.debug("expecting result index zero, got {}", results.resultIndex);
+        if (results.getResultIndex() != 0) {
+            LOG.debug("expecting result index zero, got {}", results.getResultIndex());
             return List.of();
         }
 
-        if (results.results == null || results.results.size() != 1) {
-            LOG.debug("Expecting exactly one result entry, got {}", results.results == null ? "<null>" : Integer.toString(results.results.size()));
+        if (results.getResults() == null || results.getResults().size() != 1) {
+            LOG.debug("Expecting exactly one result entry, got {}", results.getResults() == null ? "<null>" : Integer.toString(results.getResults().size()));
             return List.of();
         }
 
-        var result = results.results.get(0);
-        if (!result.fin) {
+        var result = results.getResults().get(0);
+        if (!result.isFinal()) {
             LOG.debug("Result is not final, ignoring!");
             return List.of();
         }
 
-        if (result.alternatives == null) {
+        if (result.getAlternatives() == null) {
             LOG.debug("No detected content");
             return List.of();
         }
 
         Alternative best = null;
-        for (Alternative a : result.alternatives) {
-            if (a.transcript == null || a.transcript.isBlank()) {
+        for (Alternative a : result.getAlternatives()) {
+            if (a.getTranscript() == null || a.getTranscript().isBlank()) {
                 // no content
                 continue;
             }
-            if (best != null && best.confidence > a.confidence) {
+            if (best != null && best.getConfidence() > a.getConfidence()) {
                 // we already have a better candidate
                 continue;
             }
@@ -75,7 +75,7 @@ public class ServiceImpl implements Service {
             return List.of();
         }
 
-        return evalRules(best.transcript);
+        return evalRules(best.getTranscript());
     }
 
     protected List<Command> evalRules(final String transcript) {

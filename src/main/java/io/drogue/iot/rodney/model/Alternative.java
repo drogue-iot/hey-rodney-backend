@@ -4,6 +4,22 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Alternative {
-    public double confidence;
-    public String transcript;
+    private double confidence;
+    private String transcript;
+
+    public void setConfidence(double confidence) {
+        this.confidence = confidence;
+    }
+
+    public double getConfidence() {
+        return confidence;
+    }
+
+    public void setTranscript(String transcript) {
+        this.transcript = transcript;
+    }
+
+    public String getTranscript() {
+        return transcript;
+    }
 }

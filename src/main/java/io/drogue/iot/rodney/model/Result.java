@@ -7,8 +7,24 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Result {
-    public List<Alternative> alternatives;
+    List<Alternative> alternatives;
 
     @JsonProperty("final")
-    public boolean fin;
+    boolean fin;
+
+    public void setAlternatives(List<Alternative> alternatives) {
+        this.alternatives = alternatives;
+    }
+
+    public List<Alternative> getAlternatives() {
+        return alternatives;
+    }
+
+    public void setFinal(boolean fin) {
+        this.fin = fin;
+    }
+
+    public boolean isFinal() {
+        return fin;
+    }
 }
