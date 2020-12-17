@@ -8,6 +8,7 @@ import java.nio.file.attribute.FileTime;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.List;
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
@@ -45,22 +46,15 @@ public class FileBasedProvider implements RuleProvider {
      * <pre>{@code
      * rules:
      *   - matcher: "Hello (.*)"
-     *     command:
-     *       - echo
-     *       - "Hello ${1}"
+     *     commands:
+     *       - execute:
+     *         - echo
+     *         - "Hello ${1}"
      * }</pre>
      */
     public static class Rule {
         private String matcher;
-        private List<String> command;
-
-        public void setCommand(List<String> command) {
-            this.command = command;
-        }
-
-        public List<String> getCommand() {
-            return command;
-        }
+        private List<Execute> commands;
 
         public void setMatcher(String matcher) {
             this.matcher = matcher;
@@ -68,6 +62,14 @@ public class FileBasedProvider implements RuleProvider {
 
         public String getMatcher() {
             return matcher;
+        }
+
+        public void setCommands(List<Execute> commands) {
+            this.commands = commands;
+        }
+
+        public List<Execute> getCommands() {
+            return commands;
         }
 
         public List<Command> match(final String phrase) {
@@ -80,26 +82,46 @@ public class FileBasedProvider implements RuleProvider {
                 return null;
             }
 
-            var cmd = command.stream()
-                    .map(entry -> StringReplacer.replace(entry, new ExtendedPropertiesReplacer(name -> {
-
-                        try {
-                            return m.group(name);
-                        } catch (IllegalArgumentException ignored) {
-                        }
-
-                        try {
-                            return m.group(Integer.parseInt(name, 10));
-                        } catch (NumberFormatException ignored) {
-                        }
-
-                        return null;
-
-                    }), StringReplacer.DEFAULT_PATTERN))
+            return commands.stream()
+                    .map(entry -> entry.toCommand(m))
                     .collect(Collectors.toList());
-
-            return List.of(Command.of(cmd));
         }
+    }
+
+    public static class Execute {
+        private List<String> command;
+
+        public void setCommand(final List<String> command) {
+            this.command = command;
+        }
+
+        public List<String> getCommand() {
+            return command;
+        }
+
+        public Command toCommand(final Matcher matcher) {
+            return Command.of(
+                    this.command.stream()
+                            .map(entry ->
+                                    StringReplacer.replace(entry, new ExtendedPropertiesReplacer(name -> {
+
+                                        try {
+                                            return matcher.group(name);
+                                        } catch (IllegalArgumentException ignored) {
+                                        }
+
+                                        try {
+                                            return matcher.group(Integer.parseInt(name, 10));
+                                        } catch (NumberFormatException ignored) {
+                                        }
+
+                                        return null;
+
+                                    }), StringReplacer.DEFAULT_PATTERN)
+                            )
+                            .collect(Collectors.toList()));
+        }
+
     }
 
     @ConfigProperty(name = "fileBasedProvider.file", defaultValue = "/etc/config/rules.yaml")
