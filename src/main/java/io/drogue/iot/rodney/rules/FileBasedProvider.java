@@ -102,7 +102,7 @@ public class FileBasedProvider implements RuleProvider {
         }
     }
 
-    @ConfigProperty(name = "fileBasedProvider.file", defaultValue = "/etc/rules.yaml")
+    @ConfigProperty(name = "fileBasedProvider.file", defaultValue = "/etc/config/rules.yaml")
     String ruleFile;
 
     private Instant lastCheck;
