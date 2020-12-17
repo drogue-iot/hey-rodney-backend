@@ -75,7 +75,11 @@ public class ServiceImpl implements Service {
             return List.of();
         }
 
-        return evalRules(best.getTranscript());
+        return evalRules(cleanup(best.getTranscript()));
+    }
+
+    protected String cleanup(final String transcript) {
+        return transcript.trim();
     }
 
     protected List<Command> evalRules(final String transcript) {

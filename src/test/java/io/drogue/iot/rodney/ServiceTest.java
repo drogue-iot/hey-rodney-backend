@@ -30,7 +30,7 @@ public class ServiceTest {
                                 .put("alternatives", new JsonArray()
                                         .add(new JsonObject()
                                                 .put("confidence", 0.9)
-                                                .put("transcript", "tell me a joke")
+                                                .put("transcript", "tell me a joke ")
                                         )
                                 )
                         )
