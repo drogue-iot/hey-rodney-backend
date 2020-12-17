@@ -1,9 +1,11 @@
 rules:
   - matcher: Should not match
-    command:
-      - echo
-      - Should not have matched
+    commands:
+      - execute:
+          - echo
+          - Should not have matched
   - matcher: Hello (.*)
-    command:
-      - echo
-      - hi ${1}!
+    commands:
+      - execute:
+          - echo
+          - hi ${1}!

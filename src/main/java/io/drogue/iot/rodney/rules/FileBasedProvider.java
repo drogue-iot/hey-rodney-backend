@@ -56,7 +56,7 @@ public class FileBasedProvider implements RuleProvider {
         private String matcher;
         private List<Execute> commands;
 
-        public void setMatcher(String matcher) {
+        public void setMatcher(final String matcher) {
             this.matcher = matcher;
         }
 
@@ -64,7 +64,7 @@ public class FileBasedProvider implements RuleProvider {
             return matcher;
         }
 
-        public void setCommands(List<Execute> commands) {
+        public void setCommands(final List<Execute> commands) {
             this.commands = commands;
         }
 
@@ -89,19 +89,19 @@ public class FileBasedProvider implements RuleProvider {
     }
 
     public static class Execute {
-        private List<String> command;
+        private List<String> execute;
 
-        public void setCommand(final List<String> command) {
-            this.command = command;
+        public void setExecute(final List<String> execute) {
+            this.execute = execute;
         }
 
-        public List<String> getCommand() {
-            return command;
+        public List<String> getExecute() {
+            return execute;
         }
 
         public Command toCommand(final Matcher matcher) {
             return Command.of(
-                    this.command.stream()
+                    this.execute.stream()
                             .map(entry ->
                                     StringReplacer.replace(entry, new ExtendedPropertiesReplacer(name -> {
 
