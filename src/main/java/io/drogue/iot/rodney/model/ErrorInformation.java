@@ -1,8 +1,11 @@
 package io.drogue.iot.rodney.model;
 
+import io.quarkus.runtime.annotations.RegisterForReflection;
+
 /**
  * Canonical error information.
  */
+@RegisterForReflection
 public class ErrorInformation {
 
     private final String error;

@@ -5,9 +5,12 @@ import java.util.List;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import io.quarkus.runtime.annotations.RegisterForReflection;
+
 /**
  * Root element of the IBM Watson speech-to-text result.
  */
+@RegisterForReflection
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Results {
     private List<Result> results;

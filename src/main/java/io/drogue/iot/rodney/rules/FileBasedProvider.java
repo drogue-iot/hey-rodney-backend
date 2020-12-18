@@ -22,12 +22,14 @@ import org.yaml.snakeyaml.Yaml;
 import org.yaml.snakeyaml.constructor.Constructor;
 
 import io.drogue.iot.rodney.Command;
+import io.quarkus.runtime.annotations.RegisterForReflection;
 
 @ApplicationScoped
 public class FileBasedProvider implements RuleProvider {
 
     private static final Logger LOG = LoggerFactory.getLogger(FileBasedProvider.class);
 
+    @RegisterForReflection
     public static class Rules {
         private List<Rule> rules;
 
@@ -52,6 +54,7 @@ public class FileBasedProvider implements RuleProvider {
      *         - "Hello ${1}"
      * }</pre>
      */
+    @RegisterForReflection
     public static class Rule {
         private String matcher;
         private List<Execute> commands;
@@ -88,6 +91,7 @@ public class FileBasedProvider implements RuleProvider {
         }
     }
 
+    @RegisterForReflection
     public static class Execute {
         private List<String> execute;
 
