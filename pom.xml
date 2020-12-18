@@ -30,7 +30,7 @@
         <compiler-plugin.version>3.8.1</compiler-plugin.version>
         <quarkus.platform.group-id>io.quarkus</quarkus.platform.group-id>
 
-        <cloudevents.version>2.0.0.RC2</cloudevents.version>
+        <cloudevents.version>2.0.0-milestone3</cloudevents.version>
     </properties>
 
     <dependencyManagement>

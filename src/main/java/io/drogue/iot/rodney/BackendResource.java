@@ -27,7 +27,7 @@ public class BackendResource {
         }
 
         var data = event.getData();
-        service.execute(data.toBytes());
+        service.execute(data);
 
         return Response.accepted().build();
     }
